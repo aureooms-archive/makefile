@@ -50,6 +50,21 @@ _MKDIRS := $(shell for d in $(REQUIRED_DIRS); \
                [ -d $$d ] || mkdir -p $$d;  \
              done)
 
+SKIP = false
+ifeq (me a sandwich,$(MAKECMDGOALS))
+	SKIP = true
+endif
+ifeq (it so,$(MAKECMDGOALS))
+	SKIP = true
+endif
+ifeq (sense,$(MAKECMDGOALS))
+	SKIP = true
+endif
+ifeq (love,$(MAKECMDGOALS))
+	SKIP = true
+endif
+
+ifneq ($(SKIP), true)
 ifneq ($(words $(MAKECMDGOALS)),1)
 .DEFAULT_GOAL = all
 %:
@@ -94,7 +109,8 @@ clean:
 	rm -f $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log
 
 
-
+endif
+else
 #...
 
 .PHONY: sense
