@@ -6,6 +6,7 @@ INCLUDE_PATH =
 LIBS = 
 OUTPUTNAME = 
 REQUIRED_DIRS = 
+TYPE = [lib|run]
 
 #DONOTTOUCH
 
@@ -41,6 +42,12 @@ endif
 
 AR = ar -rcs
 CXX = g++ -std=c++11 $(INCLUDE_PATH) $(FLAGS)
+TOOL = $(CXX) -o
+TOOL_OPT = $(LIBS)
+ifeq ($(TYPE),lib)
+	TOOL = $(AR)
+	TOOL_OPT = 
+endif
 OBJFILES = $(patsubst src/%,$(ROOT)o/%,$(patsubst %.cpp,%.o,$(shell find src | grep \\.cpp$$)))
 DEP = g++ -MM -MF
 DEPFILES = $(patsubst $(ROOT)o/%,$(ROOT)d/%,$(patsubst %.o,%.d,$(OBJFILES)))
@@ -89,7 +96,7 @@ endif
 
 $(OUTPUTNAME): $(OBJFILES)
 	@echo "$(ACTION_COLOR)"linking $@"$(NO_COLOR)"
-	$(AR) $@ $(OBJFILES)
+	$(TOOL) $@ $(OBJFILES) $(TOOL_OPT)
 
 $(ROOT)o/%.o: $(ROOT)d/%.d src/%.cpp
 	$(PRINT_PROGRESS) $(CXX) -c $(word 2,$^) -o $@" "
