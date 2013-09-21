@@ -7,6 +7,7 @@ LIBS =
 OUTPUTNAME = 
 REQUIRED_DIRS = 
 TYPE = [lib|run]
+SRC = src/folder/path
 
 #DONOTTOUCH
 
@@ -48,7 +49,11 @@ ifeq ($(TYPE),lib)
 	TOOL = $(AR)
 	TOOL_OPT = 
 endif
-OBJFILES = $(patsubst src/%,$(ROOT)o/%,$(patsubst %.cpp,%.o,$(shell find src | grep \\.cpp$$)))
+
+ifndef SRC
+	SRC = src
+endif
+OBJFILES = $(patsubst $(SRC)/%,$(ROOT)o/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) | grep \\.cpp$$)))
 DEP = g++ -MM -MF
 DEPFILES = $(patsubst $(ROOT)o/%,$(ROOT)d/%,$(patsubst %.o,%.d,$(OBJFILES)))
 
@@ -98,13 +103,13 @@ $(OUTPUTNAME): $(OBJFILES)
 	@echo "$(ACTION_COLOR)"linking $@"$(NO_COLOR)"
 	$(TOOL) $@ $(OBJFILES) $(TOOL_OPT)
 
-$(ROOT)o/%.o: $(ROOT)d/%.d src/%.cpp
+$(ROOT)o/%.o: $(ROOT)d/%.d $(SRC)/%.cpp
 	$(PRINT_PROGRESS) $(CXX) -c $(word 2,$^) -o $@" "
 	$(CXX) -c $(word 2,$^) -o $@ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; elif test -s temp.log; then echo "$(WARN_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; else echo "$(OK_STRING)$(NO_COLOR)"; fi;
 	@if test -e temp.errors; then rm -f temp.errors temp.log && false; else rm -f temp.errors temp.log; fi;
 
-$(ROOT)d/%.d: src/%.cpp
+$(ROOT)d/%.d: $(SRC)/%.cpp
 	echo "$(ACTION_COLOR)"generating $@"$(NO_COLOR)"
 	$(DEP) $@ -MT $(patsubst $(ROOT)d/%,$(ROOT)o/%,$(patsubst %.d,%.o,$@)) -std=c++11 $(INCLUDE_PATH) $(FLAGS) -c $<
 
