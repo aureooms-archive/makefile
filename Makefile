@@ -53,9 +53,11 @@ endif
 ifndef SRC
 	SRC = src
 endif
-OBJFILES = $(patsubst $(SRC)/%,$(ROOT)o/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) | grep \\.cpp$$)))
+OUTPUTDIR = o
+DEPENDENCYDIR = d
+OBJFILES = $(patsubst $(SRC)/%,$(ROOT)$(OUTPUTDIR)/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) | grep \\.cpp$$)))
 DEP = g++ -MM -MF
-DEPFILES = $(patsubst $(ROOT)o/%,$(ROOT)d/%,$(patsubst %.o,%.d,$(OBJFILES)))
+DEPFILES = $(patsubst $(ROOT)$(OUTPUTDIR)/%,$(ROOT)$(DEPENDENCYDIR)/%,$(patsubst %.o,%.d,$(OBJFILES)))
 
 _MKDIRS := $(shell for d in $(REQUIRED_DIRS); \
              do                               \
@@ -103,15 +105,15 @@ $(OUTPUTNAME): $(OBJFILES)
 	@echo "$(ACTION_COLOR)"linking $@"$(NO_COLOR)"
 	$(TOOL) $@ $(OBJFILES) $(TOOL_OPT)
 
-$(ROOT)o/%.o: $(ROOT)d/%.d $(SRC)/%.cpp
+$(ROOT)$(OUTPUTDIR)/%.o: $(ROOT)$(DEPENDENCYDIR)/%.d $(SRC)/%.cpp
 	$(PRINT_PROGRESS) $(CXX) -c $(word 2,$^) -o $@" "
 	$(CXX) -c $(word 2,$^) -o $@ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; elif test -s temp.log; then echo "$(WARN_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; else echo "$(OK_STRING)$(NO_COLOR)"; fi;
 	@if test -e temp.errors; then rm -f temp.errors temp.log && false; else rm -f temp.errors temp.log; fi;
 
-$(ROOT)d/%.d: $(SRC)/%.cpp
+$(ROOT)$(DEPENDENCYDIR)/%.d: $(SRC)/%.cpp
 	echo "$(ACTION_COLOR)"generating $@"$(NO_COLOR)"
-	$(DEP) $@ -MT $(patsubst $(ROOT)d/%,$(ROOT)o/%,$(patsubst %.d,%.o,$@)) -std=c++11 $(INCLUDE_PATH) $(FLAGS) -c $<
+	$(DEP) $@ -MT $(patsubst $(ROOT)$(DEPENDENCYDIR)/%,$(ROOT)$(OUTPUTDIR)/%,$(patsubst %.d,%.o,$@)) -std=c++11 $(INCLUDE_PATH) $(FLAGS) -c $<
 
 prepare:
 	rm -f temp.errors temp.log
@@ -127,11 +129,11 @@ else
 
 .PHONY: sense
 sense:
-	@p=`cat o/.sense 2>/dev/null`;if test -n "$$p";then kill $$p;rm o/.sense;printf '\033[0m';\
+	@p=`cat $(OUTPUTDIR)/.sense 2>/dev/null`;if test -n "$$p";then kill $$p;rm $(OUTPUTDIR)/.sense;printf '\033[0m';\
 	echo "make: *** No sense make to Stop \`target'. rule.";\
 	else echo "make: *** No rule to make target \`sense'.";\
 	(while sleep 0.1;do a=`hexdump -n 2 -e '/2 "%u"' /dev/urandom`; a=`expr $$a % 100`; echo -n "\033["$$a"m";done)&\
-	echo $$! > o/.sense;fi
+	echo $$! > $(OUTPUTDIR)/.sense;fi
 
 .PHONY: love
 love:
