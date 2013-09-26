@@ -54,12 +54,14 @@ ifndef SRC
 endif
 OUTPUTDIR = o
 DEPENDENCYDIR = d
+LIBDIR = lib
 OBJFILES = $(patsubst $(SRC)/%,$(ROOT)$(OUTPUTDIR)/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) | grep \\.cpp$$)))
 DEP = g++ -MM -MF
 DEPFILES = $(patsubst $(ROOT)$(OUTPUTDIR)/%,$(ROOT)$(DEPENDENCYDIR)/%,$(patsubst %.o,%.d,$(OBJFILES)))
 
 REQUIRED_DIRS = $(shell find $(SRC) -type d | sed s:^$(SRC):$(ROOT)$(OUTPUTDIR):)
 REQUIRED_DIRS += $(shell find $(SRC) -type d | sed s:^$(SRC):$(ROOT)$(DEPENDENCYDIR):)
+REQUIRED_DIRS += $(LIBDIR)
 _MKDIRS := $(shell for d in $(REQUIRED_DIRS); \
              do                               \
                [ -d $$d ] || mkdir -p $$d;  \
