@@ -61,7 +61,7 @@ DEPFILES = $(patsubst $(ROOT)$(OUTPUTDIR)/%,$(ROOT)$(DEPENDENCYDIR)/%,$(patsubst
 
 REQUIRED_DIRS = $(shell find $(SRC) -type d | sed s:^$(SRC):$(ROOT)$(OUTPUTDIR):)
 REQUIRED_DIRS += $(shell find $(SRC) -type d | sed s:^$(SRC):$(ROOT)$(DEPENDENCYDIR):)
-REQUIRED_DIRS += $(LIBDIR)
+REQUIRED_DIRS += $(ROOT)$(LIBDIR)
 _MKDIRS := $(shell for d in $(REQUIRED_DIRS); \
              do                               \
                [ -d $$d ] || mkdir -p $$d;  \
