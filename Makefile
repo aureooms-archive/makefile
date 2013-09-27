@@ -122,8 +122,8 @@ prepare:
 	rm -f temp.errors temp.log
 		
 clean:
-	@echo "$(ACTION_COLOR)"rm -f $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log"$(NO_COLOR)"
-	rm -f $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log
+	@echo "$(ACTION_COLOR)"rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(ROOT)$(DEPENDENCYDIR) $(ROOT)$(OUTPUTDIR) $(ROOT)$(LIBDIR)"$(NO_COLOR)"
+	rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(ROOT)$(DEPENDENCYDIR) $(ROOT)$(OUTPUTDIR) $(ROOT)$(LIBDIR)
 
 
 endif
