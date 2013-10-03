@@ -1,4 +1,7 @@
 makefile
 ========
 
-The _ultimate_ Makefile for C++11 projects
+Supported languages
+
+  - c++
+  - java
