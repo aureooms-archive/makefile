@@ -67,6 +67,8 @@ _MKDIRS := $(shell for d in $(REQUIRED_DIRS); \
                [ -d $$d ] || mkdir -p $$d;  \
              done)
 
+TODELETE = $(shell find $(ROOT)$(OUTPUTDIR) | grep \\.o$$)
+
 SKIP = false
 ifeq (me a sandwich,$(MAKECMDGOALS))
 	SKIP = true
@@ -122,8 +124,8 @@ prepare:
 	rm -f temp.errors temp.log
 		
 clean:
-	@echo "$(ACTION_COLOR)"rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(ROOT)$(DEPENDENCYDIR) $(ROOT)$(OUTPUTDIR) $(ROOT)$(LIBDIR)"$(NO_COLOR)"
-	rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(ROOT)$(DEPENDENCYDIR) $(ROOT)$(OUTPUTDIR) $(ROOT)$(LIBDIR)
+	@echo "$(ACTION_COLOR)"rm -rf $(DEPFILES) $(TODELETE) $(OUTPUTNAME) temp.errors temp.log $(ROOT)$(DEPENDENCYDIR) $(ROOT)$(OUTPUTDIR) $(ROOT)$(LIBDIR)"$(NO_COLOR)"
+	rm -rf $(DEPFILES) $(TODELETE) $(OUTPUTNAME) temp.errors temp.log $(ROOT)$(DEPENDENCYDIR) $(ROOT)$(OUTPUTDIR) $(ROOT)$(LIBDIR)
 
 
 endif
