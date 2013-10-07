@@ -3,5 +3,6 @@ makefile
 
 Supported languages
 
-  - c++
-  - java
+  - C++
+  - Java
+  - LaTeX
