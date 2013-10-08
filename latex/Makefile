@@ -69,11 +69,11 @@ $(FILENAME).pdf: $(FILENAME).tex $(STYLESHEET).sty bib/touch.bbl
 	egrep -i $(UNDEFINED) $(FILENAME).log || true
 
 $(FILENAME).tex: $(TEXFILES)
-	echo "$(ACTION_COLOR)"sty files changed"$(NO_COLOR)"
+	echo "$(ACTION_COLOR)"tex files changed"$(NO_COLOR)"
 	python texbuilder.py $(TEX) $(FILENAME).tex
 
 $(STYLESHEET).sty: $(STYFILES)
-	echo "$(ACTION_COLOR)"tex files changed"$(NO_COLOR)"
+	echo "$(ACTION_COLOR)"sty files changed"$(NO_COLOR)"
 	python stybuilder.py $(STY) $(STYLESHEET).sty
 
 bib/touch.bbl: $(BIBFILES)
