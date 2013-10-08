@@ -45,7 +45,7 @@ $(FILENAME).pdf: $(FILENAME).tex $(STYLESHEET).sty bib/touch.bbl
 	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
 	if test -e temp.errors; then rm -f temp.errors temp.log && false; fi;
 	if [ -e bib/touchtmp.bbl ]; then echo -n "\n$(ACTION_COLOR)"bibtex"$(NO_COLOR) " \
-	&& $(BIBTEX) $(FILENAME) 1> temp.log && bib/touchtmp.bbl \
+	&& $(BIBTEX) $(FILENAME) 1> temp.log && rm bib/touchtmp.bbl \
 	|| (touch temp.errors && rm bib/touchtmp.bbl); fi
 	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
 	if test -e temp.errors; then rm -f temp.errors temp.log && false; fi;
