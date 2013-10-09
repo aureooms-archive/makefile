@@ -42,29 +42,29 @@ $(FILENAME).pdf: $(FILENAME).tex $(STYLESHEET).sty bib/touch.bbl
 
 	echo -n "$(ACTION_COLOR)"link \#1"$(NO_COLOR) "
 	$(LATEX) $(FILENAME).tex 1> temp.log || touch temp.errors
-	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
-	if test -e temp.errors; then rm -f temp.errors temp.log && false; fi;
+	if [ -e temp.errors ]; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
+	if [ -e temp.errors ]; then rm -f temp.errors temp.log && false; fi;
 	if [ -e bib/touchtmp.bbl ]; then echo -n "\n$(ACTION_COLOR)"bibtex"$(NO_COLOR) " \
 	&& $(BIBTEX) $(FILENAME) 1> temp.log && rm bib/touchtmp.bbl \
 	|| (touch temp.errors && rm bib/touchtmp.bbl); fi
-	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
-	if test -e temp.errors; then rm -f temp.errors temp.log && false; fi;
+	if [ -e temp.errors ]; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
+	if [ -e temp.errors ]; then rm -f temp.errors temp.log && false; fi;
 	if [ -e $(FILENAME).idx ]; then echo -n "\n$(ACTION_COLOR)"makeindex"$(NO_COLOR) " \
 	&& $(MAKEINDEX) $(FILENAME) 2> temp.log || touch temp.errors; fi
-	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
-	if test -e temp.errors; then rm -f temp.errors temp.log && false; fi;
+	if [ -e temp.errors ]; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
+	if [ -e temp.errors ]; then rm -f temp.errors temp.log && false; fi;
 	echo -n "\n$(ACTION_COLOR)"link \#2"$(NO_COLOR) "
 	$(LATEX) $(FILENAME).tex 1> temp.log || touch temp.errors
-	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
-	if test -e temp.errors; then rm -f temp.errors temp.log && false; fi;
+	if [ -e temp.errors ]; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
+	if [ -e temp.errors ]; then rm -f temp.errors temp.log && false; fi;
 	if egrep -q $(RERUN) $(FILENAME).log ; then echo -n "\n$(ACTION_COLOR)"link \#3"$(NO_COLOR) " \
 	&& $(LATEX) $(FILENAME).tex 1> temp.log || touch temp.errors; fi
-	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
-	if test -e temp.errors; then rm -f temp.errors temp.log && false; fi;
+	if [ -e temp.errors ]; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; fi;
+	if [ -e temp.errors ]; then rm -f temp.errors temp.log && false; fi;
 	if egrep -q $(RERUN) $(FILENAME).log ; then echo -n "\n$(ACTION_COLOR)"link \#4"$(NO_COLOR) " \
 	&& $(LATEX) $(FILENAME).tex 1> temp.log || touch temp.errors; fi
-	if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; elif test -s temp.log; then echo "$(WARN_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; else echo "$(OK_STRING)$(NO_COLOR)"; fi;
-	if test -e temp.errors; then rm -f temp.errors temp.log && false; else rm -f temp.errors temp.log; fi;
+	if [ -e temp.errors ]; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; elif [ -s temp.log ]; then echo "$(WARN_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; else echo "$(OK_STRING)$(NO_COLOR)"; fi;
+	if [ -e temp.errors ]; then rm -f temp.errors temp.log && false; else rm -f temp.errors temp.log; fi;
 	egrep -i $(UNDEFINED) $(FILENAME).log || true
 
 $(FILENAME).tex: $(TEXFILES)
