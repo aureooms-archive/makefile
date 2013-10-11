@@ -113,8 +113,8 @@ $(OUTPUTNAME): $(OBJFILES)
 $(ROOT)$(OUTPUTDIR)/%.o: $(ROOT)$(DEPENDENCYDIR)/%.d $(SRC)/%.cpp
 	$(PRINT_PROGRESS) $(CXX) -c $(word 2,$^) -o $@" "
 	$(CXX) -c $(word 2,$^) -o $@ 2> temp.log || touch temp.errors
-	@if test -e temp.errors; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; elif test -s temp.log; then echo "$(WARN_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; else echo "$(OK_STRING)$(NO_COLOR)"; fi;
-	@if test -e temp.errors; then rm -f temp.errors temp.log && false; else rm -f temp.errors temp.log; fi;
+	if [ -e temp.errors ]; then echo "$(ERROR_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; elif [ -s temp.log ]; then echo "$(WARN_STRING)" && cat temp.log && echo -n "$(NO_COLOR)"; else echo "$(OK_STRING)$(NO_COLOR)"; fi;
+	if [ -e temp.errors ]; then rm -f temp.errors temp.log && false; else rm -f temp.errors temp.log; fi;
 
 $(ROOT)$(DEPENDENCYDIR)/%.d: $(SRC)/%.cpp
 	echo "$(ACTION_COLOR)"generating $@"$(NO_COLOR)"
