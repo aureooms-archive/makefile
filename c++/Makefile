@@ -22,16 +22,15 @@ ifneq ($(nocolor),true)
 	ACTION_COLOR=\033[95m
 endif
 
-ROOT =
 FLAGS = -Wall -W
 
 ifeq ($(prof),true)
-	ROOT += prof/
+	ROOT := $(ROOT)prof/
 	FLAGS += -pg
 endif
 
 ifeq ($(dbg),true)
-	ROOT += dbg/
+	ROOT := $(ROOT)dbg/
 	FLAGS += -g
 endif
 
