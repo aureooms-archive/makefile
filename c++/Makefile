@@ -26,8 +26,13 @@ ROOT =
 FLAGS = -Wall -W
 
 ifeq ($(prof),true)
-	ROOT = prof/
+	ROOT += prof/
 	FLAGS += -pg
+endif
+
+ifeq ($(dbg),true)
+	ROOT += dbg/
+	FLAGS += -g
 endif
 
 ifeq ($(O),1)
@@ -98,7 +103,7 @@ ifneq ($(MAKECMDGOALS),clean)
 endif
 
 ifndef PRINT_PROGRESS
-T := $(shell $(MAKE) $(MAKECMDGOALS) prof=$(prof) --dry-run \
+T := $(shell $(MAKE) $(MAKECMDGOALS) prof=$(prof) dbg=$(dbg) --dry-run \
       -rRf $(firstword $(MAKEFILE_LIST)) \
       PRINT_PROGRESS="echo COUNTTHIS" BUILD="test x ||" | grep -c "COUNTTHIS")
 N := 1
