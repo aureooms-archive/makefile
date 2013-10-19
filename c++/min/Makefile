@@ -14,10 +14,10 @@ endif
 CXX = g++ -std=c++11 $(FLAGS)
 LINK = $(CXX) -o
 
-OUTPUT_NAMES = $(patsubst $(SRC)/%.cpp,run/%,$(shell find $(SRC) | grep \\.cpp$$))
+OUTPUT_NAMES = $(patsubst $(SRC)/%.cpp,run/%,$(shell find $(SRC) -regex .*\\.cpp | sed 's/ /\\ /g'))
 SRC = src
 OUTPUTDIR = o
-OBJFILES = $(patsubst $(SRC)/%,$(OUTPUTDIR)/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) | grep \\.cpp$$)))
+OBJFILES = $(patsubst $(SRC)/%,$(OUTPUTDIR)/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) -regex .*\\.cpp | sed 's/ /\\ /g')))
 
 REQUIRED_DIRS = $(OUTPUTDIR) run
 _MKDIRS := $(shell for d in $(REQUIRED_DIRS); \
