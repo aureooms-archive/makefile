@@ -1,5 +1,11 @@
 FLAGS = -Wall -W
 
+ifeq ($(prof),true)
+	FLAGS += -pg
+endif
+ifeq ($(dbg),true)
+	FLAGS += -g
+endif
 ifeq ($(O),1)
 	FLAGS += -O1
 endif
