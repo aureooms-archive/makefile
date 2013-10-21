@@ -1,3 +1,11 @@
+#PROJECT SPECIFIC
+
+INCLUDE_PATH = ~/custom/lib/header/path
+LIBS = -libnames
+SRC = src/path/name
+
+#DONOTTOUCH
+
 FLAGS = -Wall -W
 
 ifeq ($(prof),true)
@@ -17,11 +25,13 @@ ifeq ($(O),3)
 endif
 
 
-CXX = g++ -std=c++11 $(FLAGS)
+CXX = g++ -std=c++11 $(INCLUDE_PATH) $(FLAGS)
 LINK = $(CXX) -o
 
 OUTPUT_NAMES = $(patsubst $(SRC)/%.cpp,run/%,$(shell find $(SRC) -regex .*\\.cpp | sed 's/ /\\ /g'))
-SRC = src
+ifndef SRC
+	SRC = src
+endif
 OUTPUTDIR = o
 OBJFILES = $(patsubst $(SRC)/%,$(OUTPUTDIR)/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) -regex .*\\.cpp | sed 's/ /\\ /g')))
 
@@ -36,7 +46,7 @@ default: all
 all: $(OUTPUT_NAMES)
 
 run/%: $(OUTPUTDIR)/%.o
-	$(LINK) $@ $^
+	$(LINK) $@ $^ $(LIBS)
 
 $(OUTPUTDIR)/%.o: $(SRC)/%.cpp
 	$(CXX) -c $^ -o $@
