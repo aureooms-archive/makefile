@@ -38,6 +38,9 @@ ifeq ($(syntax),true)
 	FLAGS += -fsyntax-only
 endif
 
+ifeq ($(O),0)
+	FLAGS += -O0
+endif
 ifeq ($(O),1)
 	FLAGS += -O1
 endif
