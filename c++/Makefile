@@ -50,6 +50,13 @@ endif
 ifeq ($(O),3)
 	FLAGS += -O3
 endif
+ifeq ($(O),s)
+	FLAGS += -Os
+endif
+
+ifeq ($(O),fast)
+	FLAGS += -Ofast
+endif
 
 AR = ar -rcs
 CXX = g++ -std=c++11 $(INCLUDE_PATH) $(FLAGS)
