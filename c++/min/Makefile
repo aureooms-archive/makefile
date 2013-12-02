@@ -33,6 +33,13 @@ ifeq ($(dbg),true)
 	FLAGS += -g
 endif
 
+ifeq ($(syntax),true)
+	FLAGS += -fsyntax-only
+endif
+
+ifeq ($(O),0)
+	FLAGS += -O0
+endif
 ifeq ($(O),1)
 	FLAGS += -O1
 endif
@@ -41,6 +48,13 @@ ifeq ($(O),2)
 endif
 ifeq ($(O),3)
 	FLAGS += -O3
+endif
+ifeq ($(O),s)
+	FLAGS += -Os
+endif
+
+ifeq ($(O),fast)
+	FLAGS += -Ofast
 endif
 
 AR = ar -rcs
