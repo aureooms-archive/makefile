@@ -1,8 +1,14 @@
 makefile
 ========
 
-Supported languages
+source code
 
   - C++
   - Java
   - LaTeX
+
+
+install
+
+  - scripts / programs
+  - localhost subfolders
