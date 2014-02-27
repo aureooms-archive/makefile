@@ -89,21 +89,6 @@ _MKDIRS := $(shell for d in $(REQUIRED_DIRS); \
                [ -d $$d ] || mkdir -p $$d;  \
              done)
 
-SKIP = false
-ifeq (me a sandwich,$(MAKECMDGOALS))
-	SKIP = true
-endif
-ifeq (it so,$(MAKECMDGOALS))
-	SKIP = true
-endif
-ifeq (sense,$(MAKECMDGOALS))
-	SKIP = true
-endif
-ifeq (love,$(MAKECMDGOALS))
-	SKIP = true
-endif
-
-ifneq ($(SKIP), true)
 ifneq ($(words $(MAKECMDGOALS)),1)
 .DEFAULT_GOAL = all
 %:
@@ -146,44 +131,5 @@ clean:
 	@echo "$(ACTION_COLOR)"rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(REQUIRED_DIRS)"$(NO_COLOR)"
 	rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(REQUIRED_DIRS)
 
-
-endif
-else
-#...
-
-.PHONY: sense
-sense:
-	@p=`cat $(OUTPUTDIR)/.sense 2>/dev/null`;if test -n "$$p";then kill $$p;rm $(OUTPUTDIR)/.sense;printf '\033[0m';\
-	echo "make: *** No sense make to Stop \`target'. rule.";\
-	else echo "make: *** No rule to make target \`sense'.";\
-	(while sleep 0.1;do a=`hexdump -n 2 -e '/2 "%u"' /dev/urandom`; a=`expr $$a % 100`; echo -n "\033["$$a"m";done)&\
-	echo $$! > $(OUTPUTDIR)/.sense;fi
-
-.PHONY: love
-love:
-	@echo "Aimer, ce n'est pas se regarder l'un l'autre, c'est regarder ensemble dans la même direction."
-	@echo "  -- Antoine de Saint Exupery"
-
-ifeq (me a sandwich,$(MAKECMDGOALS))
-  .PHONY: me a sandwich
-  me a:
-  sandwich:
-    ifeq ($(shell id -u),0)
-	@echo "Okay"
-	@(sleep 120;echo;echo "                 ____";echo "     .----------'    '-.";echo "    /  .      '     .   \\";\
-	echo "   /        '    .      /|";echo "  /      .             \ /";echo " /  ' .       .     .  || |";\
-	echo "/.___________    '    / //";echo "|._          '------'| /|";echo "'.............______.-' /  ";\
-	echo "|-.                  | /";echo ' `"""""""""""""-.....-'"'";echo jgs)&
-    else
-	@echo "What? Make it yourself"
-    endif
-endif
-
-
-ifeq (it so,$(MAKECMDGOALS))
-  it:
-  so:
-	@echo "Yes, sir!"
-endif
 
 endif
