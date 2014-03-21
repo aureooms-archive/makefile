@@ -3,7 +3,7 @@ $(VERBOSE).SILENT:
 
 #PROJECT SPECIFIC
 
-INCLUDE_PATH = h ~/custom/lib/header/path
+INCLUDE_PATH = -Ih -I~/custom/lib/header/path
 LIBS = -libnames
 OUTPUTNAME = run
 TYPE = [lib|run]
