@@ -37,25 +37,7 @@ ifeq ($(syntax),true)
 	FLAGS += -fsyntax-only
 endif
 
-ifeq ($(O),0)
-	FLAGS += -O0
-endif
-ifeq ($(O),1)
-	FLAGS += -O1
-endif
-ifeq ($(O),2)
-	FLAGS += -O2
-endif
-ifeq ($(O),3)
-	FLAGS += -O3
-endif
-ifeq ($(O),s)
-	FLAGS += -Os
-endif
-
-ifeq ($(O),fast)
-	FLAGS += -Ofast
-endif
+FLAGS += -O3
 
 AR = ar -rcs
 CXX = g++ -std=c++11 $(INCLUDE_PATH) $(FLAGS)
@@ -72,7 +54,7 @@ endif
 OUTPUTDIR = o
 DEPENDENCYDIR = d
 LIBDIR = lib
-OUTPUT_NAMES = $(patsubst $(SRC)/%.cpp,run/%,$(shell find $(SRC) -regex .*\\.cpp | sed 's/ /\\ /g'))
+OUTPUT_NAMES = $(patsubst $(SRC)/%.cpp,$(ROOT)$(TYPE)/%,$(shell find $(SRC) -regex .*\\.cpp | sed 's/ /\\ /g'))
 OBJFILES = $(patsubst $(SRC)/%,$(ROOT)$(OUTPUTDIR)/%,$(patsubst %.cpp,%.o,$(shell find $(SRC) | grep \\.cpp$$)))
 DEP = g++ -MM -MF
 DEPFILES = $(patsubst $(ROOT)$(OUTPUTDIR)/%,$(ROOT)$(DEPENDENCYDIR)/%,$(patsubst %.o,%.d,$(OBJFILES)))
@@ -128,8 +110,8 @@ prepare:
 	rm -f temp.errors temp.log
 		
 clean:
-	@echo "$(ACTION_COLOR)"rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(REQUIRED_DIRS)"$(NO_COLOR)"
-	rm -rf $(DEPFILES) $(OBJFILES) $(OUTPUTNAME) temp.errors temp.log $(REQUIRED_DIRS)
+	@echo "$(ACTION_COLOR)"rm -rf $(DEPFILES) $(OBJFILES) temp.errors temp.log $(REQUIRED_DIRS)"$(NO_COLOR)"
+	rm -rf $(DEPFILES) $(OBJFILES) temp.errors temp.log $(REQUIRED_DIRS)
 
 
 endif
