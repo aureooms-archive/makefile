@@ -60,7 +60,10 @@ ifeq ($(O),fast)
 endif
 
 AR = ar -rcs
-CXX = g++ -std=c++11 $(INCLUDE_PATH) $(FLAGS)
+ifndef COMPILER
+COMPILER = g++
+endif
+CXX = $(COMPILER) -std=c++11 $(INCLUDE_PATH) $(FLAGS)
 TOOL = $(CXX) -o
 TOOL_OPT = $(LIBS)
 ifeq ($(TYPE),lib)
