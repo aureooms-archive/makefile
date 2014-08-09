@@ -23,9 +23,9 @@ endif
 TEX = tex
 STY = sty
 BIB = bib
-TEXFILES = $(shell find $(TEX) -regex .*\\.tex | sed 's/ /\\ /g')
-STYFILES = $(shell find $(STY) -regex .*\\.sty | sed 's/ /\\ /g')
-BIBFILES = $(shell find $(BIB) -regex .*\\.bib | sed 's/ /\\ /g')
+TEXFILES = $(shell find $(TEX) -regex .*\\.tex | sed 's/:/\\:/g' | sed 's/ /\\ /g')
+STYFILES = $(shell find $(STY) -regex .*\\.sty | sed 's/:/\\:/g' | sed 's/ /\\ /g')
+BIBFILES = $(shell find $(BIB) -regex .*\\.bib 2>/dev/null | sed 's/:/\\:/g' | sed 's/ /\\ /g')
 
 RERUN = "(There were undefined references|Rerun to get (cross-references|the bars) right)"
 UNDEFINED = "((Reference|Citation).*undefined)|(Label.*multiply defined)"
@@ -69,16 +69,21 @@ $(FILENAME).pdf: $(FILENAME).tex $(STYLESHEET).sty bib/touch.bbl
 
 $(FILENAME).tex: $(TEXFILES)
 	echo "$(ACTION_COLOR)"tex files changed"$(NO_COLOR)"
-	python texbuilder.py $(TEX) $(FILENAME).tex
+	$$ tex build $(TEX) $(FILENAME).tex
 
 $(STYLESHEET).sty: $(STYFILES)
 	echo "$(ACTION_COLOR)"sty files changed"$(NO_COLOR)"
-	python stybuilder.py $(STY) $(STYLESHEET).sty
+	$$ sty build $(STY) $(STYLESHEET).sty
 
+ifeq ($(BIBFILES),)
+bib/touch.bbl: $(BIBFILES)
+
+else
 bib/touch.bbl: $(BIBFILES)
 	echo "$(ACTION_COLOR)"bib files changed"$(NO_COLOR)"
 	touch bib/touch.bbl
 	touch bib/touchtmp.bbl
+endif
 
 clean:
 	rm -f *.aux *.lof *.log *.bbl *.blg *.toc *.idx *.ilg *.ind *.lol *.out *.loa *.equ *.pyg *.alg *.lomintedobject *.loalgobject *.loe $(FILENAME).tex $(FILENAME).pdf $(STYLESHEET).sty *.asy bib/touch.bbl bib/touchtmp.bbl
